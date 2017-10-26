@@ -41,22 +41,26 @@ public class TopController {
 	}
 
 	private void datagramSetZuluTime(String message) {
-		Matcher matcher = DatagramUtil.PAT_TIME_UTC.matcher(message);
-		String match = extracted(matcher);
-		datagram.setZuluTime(match);
+		Matcher matcher = DatagramUtil.PAT_TIME_UTC.matcher(message);		
+		System.out.println(extracted(matcher));
+		
+		datagram.getTime().setDay(matcher.group(1));
+		datagram.getTime().setHr(matcher.group(2));
+		datagram.getTime().setMin(matcher.group(3));
+		datagram.getTime().setUnix();
 	}
 
 	private void datagramSetTemp(String message) {
 		Matcher matcher = DatagramUtil.PAT_TEMP_C.matcher(message);
-		String match = extracted(matcher);
-
-System.out.println(match);
-
+		System.out.println(extracted(matcher));
+		
 		double airTemp = Double.parseDouble(matcher.group(2));
 		double dewTemp = Double.parseDouble(matcher.group(4));
 
-		if ("M".equals(matcher.group(1))) airTemp = -airTemp;
-		if ("M".equals(matcher.group(3))) dewTemp = -dewTemp;
+		if ("M".equals(matcher.group(1)))
+			airTemp = -airTemp;
+		if ("M".equals(matcher.group(3)))
+			dewTemp = -dewTemp;
 
 		datagram.getTemp().setAirTemp(airTemp);
 		datagram.getTemp().setDewTemp(dewTemp);

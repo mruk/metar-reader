@@ -5,22 +5,22 @@ package mruk.metarreader;
  *
  */
 public class DatagramTemperature {
-  private double AIR_TEMP;
-  private double DEW_TEMP;
+	private double AIR_TEMP;
+	private double DEW_TEMP;
 
-  public void setAirTemp(double temp) {
-    this.AIR_TEMP = temp;
-  }
+	public void setAirTemp(double temp) {
+		this.AIR_TEMP = temp;
+	}
 
-  public void setDewTemp(double temp) {
-    this.DEW_TEMP = temp;
-  }
+	public void setDewTemp(double temp) {
+		this.DEW_TEMP = temp;
+	}
 
-  public double getAirTemp() {
-    return this.AIR_TEMP;
-  }
+	public double getAir() {
+		return this.AIR_TEMP;
+	}
 
-  public double getDewTemp() {
-    return this.DEW_TEMP;
-  }
+	public double getDew() {
+		return this.DEW_TEMP;
+	}
 }
