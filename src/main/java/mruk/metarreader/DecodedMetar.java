@@ -6,43 +6,48 @@ package mruk.metarreader;
  */
 public class DecodedMetar {
 
+  private DatagramAirport dataAirport;
+  private DatagramTemperature dataTemp;
+  //private DatagramTime dataTime;
+
 	private String reportType;
-	private String airport;
 	private String zuluTime;
 	private String temp;
 
 	public DecodedMetar() {
+    dataAirport = new DatagramAirport();
+    dataTemp = new DatagramTemperature();
 	}
 
 	public void setReportType(String datagram) {
 		reportType = datagram;
 	}
 
-	public void setAirport(String str) {
-		airport = str;
-	}
+  public void setAirport(DatagramAirport dataAirport) {
+    this.dataAirport = dataAirport;
+  }
 
 	public void setZuluTime(String str) {
 		zuluTime = str;
 	}
-	
-	public void setTemp(String str) {
-		temp = str;
+
+	public void setTemp(DatagramTemperature dataTemp) {
+		this.dataTemp = dataTemp;
 	}
 
 	public String getType() {
 		return reportType;
 	}
 
-	public String getAirport() {
-		return airport;
-	}
+  public DatagramAirport getAirport() {
+    return dataAirport;
+  }
 
 	public String getUtc() {
 		return zuluTime;
 	}
-	
-	public String getTemp() {
-		return temp;
+
+	public DatagramTemperature getTemp() {
+		return dataTemp;
 	}
 }
