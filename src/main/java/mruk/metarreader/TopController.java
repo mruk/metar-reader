@@ -22,6 +22,7 @@ public class TopController {
 		datagramSetAirport(message);
 		datagramSetZuluTime(message);
 		datagramSetTemp(message);
+		datagramSetWind(message);
 
 		TopData td = new TopData();
 		td.setDatagram(datagram);
@@ -41,9 +42,9 @@ public class TopController {
 	}
 
 	private void datagramSetZuluTime(String message) {
-		Matcher matcher = DatagramUtil.PAT_TIME_UTC.matcher(message);		
+		Matcher matcher = DatagramUtil.PAT_TIME_UTC.matcher(message);
 		System.out.println(extracted(matcher));
-		
+
 		datagram.getTime().setDay(matcher.group(1));
 		datagram.getTime().setHr(matcher.group(2));
 		datagram.getTime().setMin(matcher.group(3));
@@ -53,7 +54,7 @@ public class TopController {
 	private void datagramSetTemp(String message) {
 		Matcher matcher = DatagramUtil.PAT_TEMP_C.matcher(message);
 		System.out.println(extracted(matcher));
-		
+
 		double airTemp = Double.parseDouble(matcher.group(2));
 		double dewTemp = Double.parseDouble(matcher.group(4));
 
@@ -64,6 +65,17 @@ public class TopController {
 
 		datagram.getTemp().setAirTemp(airTemp);
 		datagram.getTemp().setDewTemp(dewTemp);
+	}
+
+	private void datagramSetWind(String message) {
+		Matcher matcher = DatagramUtil.PAT_WIND_GENERAL.matcher(message);
+		System.out.println(extracted(matcher));
+
+		double windDir = Double.parseDouble(matcher.group(1));
+		double windSpd = Double.parseDouble(matcher.group(2));
+
+		datagram.getWind().setDirection(windDir);
+		datagram.getWind().setSpeed(windSpd);
 	}
 
 	private String extracted(Matcher matcher) {
