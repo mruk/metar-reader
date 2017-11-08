@@ -10,6 +10,8 @@ public class DecodedMetar {
 	private DatagramTime dataTime;
 	private DatagramTemperature dataTemp;
 	private DatagramWind dataWind;
+	private DatagramWeather dataWeather;
+	private DatagramPressure dataPressure;
 
 	private String reportType;
 
@@ -18,6 +20,8 @@ public class DecodedMetar {
 		dataTime = new DatagramTime();
 		dataTemp = new DatagramTemperature();
 		dataWind = new DatagramWind();
+		dataWeather = new DatagramWeather();
+		dataPressure = new DatagramPressure();
 	}
 
 	public void setReportType(String datagram) {
@@ -58,5 +62,21 @@ public class DecodedMetar {
 
 	public void setWind(DatagramWind dataWind) {
 		this.dataWind = dataWind;
+	}
+
+	public void setWeather(DatagramWeather weather) {
+		this.dataWeather = weather;
+	}
+
+	public DatagramWeather getWeather() {
+		return this.dataWeather;
+	}
+
+	public void setPressure(DatagramPressure dp) {
+		this.dataPressure = dp;
+	}
+
+	public DatagramPressure getPressure() {
+		return this.dataPressure;
 	}
 }

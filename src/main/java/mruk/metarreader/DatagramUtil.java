@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 /**
  * Util model class.
- *
+ * REGEXes based on: http://awiacja.imgw.pl/index.php?product=metar-opis
  */
 
 public class DatagramUtil {
@@ -33,16 +33,29 @@ public class DatagramUtil {
 
 	/**
 	 * Wind General Match
-	 * Group1: \d{3}, wind direction, 10deg granularity,
+	 * Group1: VRB \d{3}, wind direction, 10deg granularity OR direction is VAR,
 	 * Group2: \d{2}, wind speed, knots.
+	 * Group4: G		, optional GUST indicator,
+	 * Group5: \d{2}, GUST speed, knots.
 	 */
-	private static final String REG_WIND_GENERAL = "(\\d{3})(\\d{2})KT";
+	private static final String REG_WIND_GENERAL = "(VRB|\\d{3})(\\d{2})((G)(\\d{2}))?KT";
+
+	private static final String REG_ATM_STATE = " (-|[+])?(DZ|RA|SN|SG|PL|GR|GS|UP|BR|FG|FU|VA|DU|SA|HZ|PO|SQ|FC|SS|DS|MI|BC|PR|DR|BL|SH|TS|FZ|NSW)(DZ|RA|SN|SG|PL|GR|GS|UP|BR|FG|FU|VA|DU|SA|HZ|PO|SQ|FC|SS|DS|MI|BC|PR|DR|BL|SH|TS|FZ)? ";
+
+	/**
+	 * Wind General Match
+	 * Group1: Q, pressure indicator,
+	 * Group2: \d{4}, pressure hPa.
+	 */
+	private static final String REG_QNH = "(Q)(\\d{4})";
 
 	public static final Pattern PAT_DATAGRAM_TYPE = Pattern.compile(DatagramUtil.REG_DATAGRAM_TYPES);
 	public static final Pattern PAT_AIRPORT_CODE = Pattern.compile(DatagramUtil.REG_AIRPORT_CODE);
 	public static final Pattern PAT_TIME_UTC = Pattern.compile(DatagramUtil.REG_TIME_UTC);
 	public static final Pattern PAT_TEMP_C = Pattern.compile(DatagramUtil.REG_TEMP_C);
 	public static final Pattern PAT_WIND_GENERAL = Pattern.compile(DatagramUtil.REG_WIND_GENERAL);
+	public static final Pattern PAT_ATM_STATE = Pattern.compile(DatagramUtil.REG_ATM_STATE);
+	public static final Pattern PAT_QNH = Pattern.compile(DatagramUtil.REG_QNH);
 
 	public static long getUnix(int day, int hr, int min){
 		TimeZone tz = TimeZone.getTimeZone("UTC");

@@ -23,6 +23,8 @@ public class TopController {
 		datagramSetZuluTime(message);
 		datagramSetTemp(message);
 		datagramSetWind(message);
+		datagramSetWeather(message);
+		datagramSetPressure(message);
 
 		TopData td = new TopData();
 		td.setDatagram(datagram);
@@ -71,18 +73,47 @@ public class TopController {
 		Matcher matcher = DatagramUtil.PAT_WIND_GENERAL.matcher(message);
 		System.out.println(extracted(matcher));
 
-		double windDir = Double.parseDouble(matcher.group(1));
-		double windSpd = Double.parseDouble(matcher.group(2));
+		// in METAR wind direction can be coded as:
+		// \d{3}  - direction rounded to 10deg,
+		// VRB		- variable direction.
+		if (matcher.group(1).toString().equals("VRB")) {
+			datagram.getWind().setVrb(true);
+		} else {
+			long windDir = Long.valueOf(matcher.group(1));
+			datagram.getWind().setVrb(false);
+			datagram.getWind().setDirection(windDir);
+		}
 
-		datagram.getWind().setDirection(windDir);
+		long windSpd = Long.valueOf(matcher.group(2));
 		datagram.getWind().setSpeed(windSpd);
+
+		if (matcher.group(3) != null) {
+			long gust = Long.valueOf(matcher.group(5));
+			datagram.getWind().setGust(gust);
+		}
+	}
+
+	private void datagramSetWeather(String message){
+		Matcher matcher = DatagramUtil.PAT_ATM_STATE.matcher(message);
+		System.out.println(extracted(matcher));
+
+		datagram.getWeather().setOccurence(extracted(matcher));
+	}
+
+	private void datagramSetPressure(String message) {
+		Matcher matcher = DatagramUtil.PAT_QNH.matcher(message);
+		System.out.println(extracted(matcher));
+		if (matcher.group(1) != null) {
+			long press = Long.valueOf(matcher.group(2));
+			datagram.getPressure().setQnh(press);
+		}
 	}
 
 	private String extracted(Matcher matcher) {
 		if (matcher.find()) {
 			return matcher.group().trim();
 		} else {
-			return "not found";
+			return "not reported";
 		}
 	}
 }
